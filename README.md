@@ -31,6 +31,24 @@ Para rodar o projeto localmente, siga os passos abaixo:
 1. **Clone o repositório**:
    ```bash
    git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   
+2. **Navegue até o diretório do projeto**:
+   cd nome-do-repositorio
+   
+3. **Instale as dependências**:
+   npm install 
+
+4. **Inicie o servidor de desenvolvimento**:
+   npm start
+
 
 ## Licença
 Este projeto é licenciado sob a MIT License.
+
+##Contato
+Para mais informações, entre em contato com os membros da equipe:
+
+Nome do Membro 1 - mari2000rodrigues.dev@gmail.com
+Nome do Membro 2 - email@example.com
+Nome do Membro 3 - email@example.com
+Nome do Membro 4 - email@example.com
