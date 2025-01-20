@@ -45,7 +45,7 @@ Para rodar o projeto localmente, siga os passos abaixo:
 ## Licença
 Este projeto é licenciado sob a MIT License.
 
-##Contato
+## Contato
 Para mais informações, entre em contato com os membros da equipe:
 
 Nome do Membro 1 - mari2000rodrigues.dev@gmail.com
