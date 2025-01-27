@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import "../app.css"
 const products = [
-  { id: 1, name: "Batom Vermelho", description: "Alta pigmentação", price: 39.9, stock: 50, image: "https://via.placeholder.com/200" },
-  { id: 2, name: "Base Matte", description: "Cobertura completa", price: 79.9, stock: 30, image: "https://via.placeholder.com/200" },
-  { id: 3, name: "Sombra Neon", description: "Cores vibrantes", price: 49.9, stock: 20, image: "https://via.placeholder.com/200" },
+  { id: 1, name: "Batom Vermelho", description: "Alta pigmentação", price: 39.9, stock: 50, image: "/images/Batomvermelho.jpg" },
+  { id: 2, name: "Base Matte", description: "Cobertura completa", price: 79.9, stock: 30, image: "/images/basematte.png" },
+  { id: 3, name: "Sombra Neon", description: "Cores vibrantes", price: 49.9, stock: 20, image: "/images/sombraneon.jpeg" },
 ];
 
 const Home = () => {
