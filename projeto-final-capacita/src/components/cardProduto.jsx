@@ -6,13 +6,10 @@ import { Button } from '@mui/material';
 
 const CardProduto = ({ produto, onClickEditar, onClickDeletar }) => {
 
-    const produtoPathImg = (produtoPath) => 
-        new URL(`../assets/produtos/${produtoPath}`, import.meta.url).href;
-
     return (
         <Card>
             <CardMedia
-                image={produtoPathImg(produto.image)}
+                image={`images/${produto.image}`}
                 title={produto.name}
                 sx={{
                     height: 300,

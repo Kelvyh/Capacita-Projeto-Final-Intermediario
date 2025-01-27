@@ -6,10 +6,14 @@ import AddIcon from '@mui/icons-material/Add';
 import CardProduto from "./cardProduto";
 import CadastroProduto from "./CadastroProduto";
 
-import { getProdutos, addProduto, updateProduto, deleteProduto } from "../data/db";
+let products = [
+  { id: 1, name: "Batom Vermelho", description: "Alta pigmentação", price: 39.9, stock: 50, image: "batom-vermelho.jpg" },
+  { id: 2, name: "Base Matte", description: "Cobertura completa", price: 79.9, stock: 30, image: "base-matte.png" },
+  { id: 3, name: "Sombra Neon", description: "Cores vibrantes", price: 49.9, stock: 20, image: "sombra-neon.jpeg" },
+];
 
 const Home = () => {
-  const [produtos, setProdutos] = useState(getProdutos());
+
   const [currentPage, setCurrentPage] = useState(1)
 
   const [modalCadastro, setModalCadastro] = useState(false)
@@ -17,7 +21,7 @@ const Home = () => {
   const [modalDeletar, setModalDeletar] = useState(false)
 
   const [searchTerm, setSearchTerm] = useState("")
-  const filteredProducts = produtos.filter((product) =>
+  const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
