@@ -1,65 +1,143 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import "../app.css"
+import { TextField, Container, Grid2, Pagination, Button, Modal, Box } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+
 import CardProduto from "./cardProduto";
-const products = [
-  { id: 1, name: "Batom Vermelho", description: "Alta pigmentação", price: 39.9, stock: 50, image: "batom-vermelho.jpg" },
-  { id: 2, name: "Base Matte", description: "Cobertura completa", price: 79.9, stock: 30, image: "base-matte.jpg" },
-  { id: 3, name: "Sombra Neon", description: "Cores vibrantes", price: 49.9, stock: 20, image: "sombra-neon.jpg" },
-];
+import CadastroProduto from "./CadastroProduto";
+
+import { getProdutos, addProduto, updateProduto, deleteProduto } from "../data/db";
 
 const Home = () => {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [produtos, setProdutos] = useState(getProdutos());
   const [currentPage, setCurrentPage] = useState(1)
-  const productsPerPage = 6
-  const filteredProducts = products.filter((product) =>
+
+  const [modalCadastro, setModalCadastro] = useState(false)
+  const [modalEditar, setModalEditar] = useState(false)
+  const [modalDeletar, setModalDeletar] = useState(false)
+
+  const [searchTerm, setSearchTerm] = useState("")
+  const filteredProducts = produtos.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const productsPerPage = 6
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
   return (
-    <div className="container">
-      <h1>Loja de Cosméticos</h1>
-      <input
-        type="text"
-        placeholder="Buscar produtos..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ padding: "10px", marginBottom: "20px", width: "100%" }}
-      />
-      <div className="product-grid">
-        {currentProducts.map((product) => (
-          // <div className="product-card" key={product.id}>
-          //   <img src={product.image} alt={product.name} />
-          //   <h3>{product.name}</h3>
-          //   <p>{product.description}</p>
-          //   <p>R$ {product.price.toFixed(2)}</p>
-          //   <p>Estoque: {product.stock}</p>
-          // </div>
-          <CardProduto key={product.id} produto={product} />
-        ))}
-      </div>
-      <div>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            style={{
-              padding: "10px",
-              margin: "5px",
-              backgroundColor: currentPage === page ? "#007bff" : "#ddd",
-              color: currentPage === page ? "#fff" : "#000",
-              border: "none",
-              cursor: "pointer",
-            }}
+    <Container className="container">
+      <h1>Gerenciamento de Produtos</h1>
+      <Grid2 container spacing={2}
+        sx={{ alignItems: "stratch", marginBottom: "20px"}}
+      >
+        <Grid2 size={7}>
+          <TextField
+            type="text"
+            placeholder="Buscar produtos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ width: "100%" }}
+          />
+        </Grid2>
+        <Grid2 size={3}>
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={()=>setModalCadastro(true)}
+            sx={{ height: "100%" }}
           >
-            {page}
-          </button>
+            <AddIcon/>
+            Cadastrar produto
+          </Button>
+        </Grid2>
+      </Grid2>
+      <Grid2 container spacing={2} className="product-grid">
+        {currentProducts.map((product) => (
+          <Grid2 size={4} key={product.id}>
+            <CardProduto produto={product} 
+            onClickEditar={()=>{
+              setModalEditar(true)
+            }} 
+            onClickDeletar={()=>{
+              setModalDeletar(true)
+            }}
+            />
+          </Grid2>
         ))}
-      </div>
-    </div>
+      </Grid2>
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        color="primary"
+        variant="outlined"
+        shape="rounded"
+        sx={{
+          marginTop: "20px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      />
+
+      <Modal
+        open={modalCadastro}
+        onClose={()=>setModalCadastro(false)}
+        aria-labelledby="modal-cadastrar-produto"
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh", // 
+          }}
+        >
+            <CadastroProduto/>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={modalEditar}
+        onClose={()=>setModalEditar(false)}
+        aria-labelledby="modal-editar-produto"
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+            Modal Editar
+        </Box>
+      </Modal>
+
+      <Modal
+        open={modalDeletar}
+        onClose={()=>setModalDeletar(false)}
+        aria-labelledby="modal-deletar-produto"
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh", // 
+          }}
+        >
+            Modal Deletar
+        </Box>
+      </Modal>
+
+    </Container>
   );
 };
 
