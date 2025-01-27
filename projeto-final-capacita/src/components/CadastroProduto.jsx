@@ -1,32 +1,63 @@
 import { useState } from "react";
-import { TextField, Button, Typography, Container, Grid2, Box, Select, MenuItem, Snackbar, Alert } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Box,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 
 const CadastroProduto = () => {
   const [produto, setProduto] = useState({
     nome: "",
     descricao: "",
     preco: "",
-    categoria: "",
+    imagem: null,
   });
 
   const [errors, setErrors] = useState({});
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setProduto({
       ...produto,
-      [name]: value,
+      [name]: value
+    })
+  }
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) return;
+
+    const isValidSize = file.size <= 5 * 1024 * 1024
+    const isValidType = ["image/jpeg", "image/png"].includes(file.type)
+
+    if (!isValidSize) {
+      alert("A imagem é muito grande (máximo 5MB).");
+      return;
+    }
+
+    if (!isValidType) {
+      alert("Formato de imagem inválido. Use JPEG ou PNG.")
+      return
+    }
+
+    setProduto({
+      ...produto,
+      imagem: file
     });
+    setErrors((prev) => ({ ...prev, imagem: null }))
   };
 
   const validate = () => {
     let tempErrors = {};
     if (!produto.nome) tempErrors.nome = "Nome do produto é obrigatório!";
     if (!produto.descricao) tempErrors.descricao = "Descrição do produto é obrigatória!";
-    if (!produto.preco || isNaN(produto.preco) || Number(produto.preco) <= 0)
-      tempErrors.preco = "Preço deve ser um número positivo!";
-    if (!produto.categoria) tempErrors.categoria = "Categoria é obrigatória!";
+    if (!produto.preco) tempErrors.preco = "Preço é obrigatório!";
+    if (!produto.imagem) tempErrors.imagem = "Uma imagem é obrigatória!";
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -39,7 +70,7 @@ const CadastroProduto = () => {
         nome: "",
         descricao: "",
         preco: "",
-        categoria: "",
+        imagem: null,
       });
       setSnackbarOpen(true);
     }
@@ -53,7 +84,6 @@ const CadastroProduto = () => {
         backgroundColor: "#fce4ec",
         borderRadius: "8px",
         boxShadow: 3,
-        minWidth: 300,
       }}
     >
       <Box textAlign="center" sx={{ marginBottom: "20px" }}>
@@ -62,92 +92,63 @@ const CadastroProduto = () => {
         </Typography>
       </Box>
       <form onSubmit={handleSubmit}>
-        <Grid2 container spacing={2}>
-          <Grid2 item xs={12}>
-            <TextField
-              fullWidth
-              label="Nome do Produto"
-              name="nome"
-              value={produto.nome}
-              onChange={handleChange}
-              error={Boolean(errors.nome)}
-              helperText={errors.nome}
-              variant="outlined"
-              size="small"
-              sx={{ backgroundColor: "white" }}
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            label="Nome do Produto"
+            name="nome"
+            value={produto.nome}
+            onChange={handleChange}
+            error={Boolean(errors.nome)}
+            helperText={errors.nome}
+          />
+        </Box>
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            label="Descrição"
+            name="descricao"
+            value={produto.descricao}
+            onChange={handleChange}
+            error={Boolean(errors.descricao)}
+            helperText={errors.descricao}
+          />
+        </Box>
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            label="Preço"
+            name="preco"
+            value={produto.preco}
+            onChange={handleChange}
+            error={Boolean(errors.preco)}
+            helperText={errors.preco}
+          />
+        </Box>
+        <Box mb={2}>
+          <Button variant="contained" component="label">
+            Upload de Imagem
+            <input
+              type="file"
+              hidden
+              accept="image/jpeg, image/png"
+              onChange={handleImageUpload}
             />
-          </Grid2>
-          <Grid2 item xs={12}>
-            <TextField
-              fullWidth
-              label="Descrição"
-              name="descricao"
-              value={produto.descricao}
-              onChange={handleChange}
-              error={Boolean(errors.descricao)}
-              helperText={errors.descricao}
-              variant="outlined"
-              size="small"
-              sx={{ backgroundColor: "white" }}
-            />
-          </Grid2>
-          <Grid2 item xs={12}>
-            <TextField
-              fullWidth
-              type="number"
-              inputProps={{ min: 0, step: 0.01 }}
-              label="Preço"
-              name="preco"
-              value={produto.preco}
-              onChange={handleChange}
-              error={Boolean(errors.preco)}
-              helperText={errors.preco}
-              variant="outlined"
-              size="small"
-              sx={{ backgroundColor: "white" }}
-            />
-          </Grid2>
-          <Grid2 item xs={12}>
-            <Select
-              fullWidth
-              displayEmpty
-              name="categoria"
-              value={produto.categoria}
-              onChange={handleChange}
-              error={Boolean(errors.categoria)}
-              size="small"
-              sx={{ backgroundColor: "white" }}
-            >
-              <MenuItem value="" disabled>
-                Selecione uma categoria
-              </MenuItem>
-              <MenuItem value="batom">Batom</MenuItem>
-              <MenuItem value="sombra">Sombra</MenuItem>
-              <MenuItem value="base">Base</MenuItem>
-            </Select>
-            {errors.categoria && (
-              <Typography variant="body2" color="error">
-                {errors.categoria}
-              </Typography>
-            )}
-          </Grid2>
-          <Grid2 item xs={12}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                backgroundColor: "#d81b60",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#c2185b",
-                },
-              }}
-            >
-              Cadastrar Produto
-            </Button>
-          </Grid2>
-        </Grid2>
+          </Button>
+          {errors.imagem && (
+            <Typography variant="body2" color="error">
+              {errors.imagem}
+            </Typography>
+          )}
+        </Box>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ backgroundColor: "#d81b60", color: "white" }}
+        >
+          Cadastrar Produto
+        </Button>
       </form>
       <Snackbar
         open={snackbarOpen}
