@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../app.css";
 import { TextField, Container, Grid2, Pagination, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CardProduto from "./cardProduto";
+import CardProduto from "./CardProduto";
 
 let products = [
   { id: 1, name: "Batom Vermelho", description: "Alta pigmentação", price: 39.9, stock: 50, image: "batom-vermelho.jpg" },
