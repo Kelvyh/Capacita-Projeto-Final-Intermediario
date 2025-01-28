@@ -1,10 +1,9 @@
-import { useState } from "react"
-import "../app.css"
-import { TextField, Container, Grid2, Pagination, Button, Modal, Box } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../app.css";
+import { TextField, Container, Grid2, Pagination, Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import CardProduto from "./cardProduto";
-import CadastroProduto from "./CadastroProduto";
 
 let products = [
   { id: 1, name: "Batom Vermelho", description: "Alta pigmentação", price: 39.9, stock: 50, image: "batom-vermelho.jpg" },
@@ -13,19 +12,15 @@ let products = [
 ];
 
 const Home = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const [modalCadastro, setModalCadastro] = useState(false)
-  const [modalEditar, setModalEditar] = useState(false)
-  const [modalDeletar, setModalDeletar] = useState(false)
-
-  const [searchTerm, setSearchTerm] = useState("")
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const productsPerPage = 6
+  const productsPerPage = 6;
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -38,9 +33,7 @@ const Home = () => {
   return (
     <Container className="container">
       <h1>Gerenciamento de Produtos</h1>
-      <Grid2 container spacing={2}
-        sx={{ alignItems: "stratch", marginBottom: "20px"}}
-      >
+      <Grid2 container spacing={2} sx={{ alignItems: "stratch", marginBottom: "20px" }}>
         <Grid2 size={7}>
           <TextField
             type="text"
@@ -51,13 +44,13 @@ const Home = () => {
           />
         </Grid2>
         <Grid2 size={3}>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             color="primary"
-            onClick={()=>setModalCadastro(true)}
+            onClick={() => navigate("/cadastrar-produto")}
             sx={{ height: "100%" }}
           >
-            <AddIcon/>
+            <AddIcon />
             Cadastrar produto
           </Button>
         </Grid2>
@@ -65,14 +58,7 @@ const Home = () => {
       <Grid2 container spacing={2} className="product-grid">
         {currentProducts.map((product) => (
           <Grid2 size={4} key={product.id}>
-            <CardProduto produto={product} 
-            onClickEditar={()=>{
-              setModalEditar(true)
-            }} 
-            onClickDeletar={()=>{
-              setModalDeletar(true)
-            }}
-            />
+            <CardProduto produto={product} />
           </Grid2>
         ))}
       </Grid2>
@@ -89,58 +75,6 @@ const Home = () => {
           justifyContent: "center",
         }}
       />
-
-      <Modal
-        open={modalCadastro}
-        onClose={()=>setModalCadastro(false)}
-        aria-labelledby="modal-cadastrar-produto"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh", // 
-          }}
-        >
-            <CadastroProduto/>
-        </Box>
-      </Modal>
-
-      <Modal
-        open={modalEditar}
-        onClose={()=>setModalEditar(false)}
-        aria-labelledby="modal-editar-produto"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-            Modal Editar
-        </Box>
-      </Modal>
-
-      <Modal
-        open={modalDeletar}
-        onClose={()=>setModalDeletar(false)}
-        aria-labelledby="modal-deletar-produto"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh", // 
-          }}
-        >
-            Modal Deletar
-        </Box>
-      </Modal>
-
     </Container>
   );
 };

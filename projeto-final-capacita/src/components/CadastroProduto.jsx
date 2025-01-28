@@ -8,8 +8,11 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom"; 
 
 const CadastroProduto = () => {
+  const navigate = useNavigate(); 
+
   const [produto, setProduto] = useState({
     nome: "",
     descricao: "",
@@ -18,22 +21,22 @@ const CadastroProduto = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setProduto({
       ...produto,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (!file) return;
 
-    const isValidSize = file.size <= 5 * 1024 * 1024
-    const isValidType = ["image/jpeg", "image/png"].includes(file.type)
+    const isValidSize = file.size <= 5 * 1024 * 1024;
+    const isValidType = ["image/jpeg", "image/png"].includes(file.type);
 
     if (!isValidSize) {
       alert("A imagem é muito grande (máximo 5MB).");
@@ -41,15 +44,15 @@ const CadastroProduto = () => {
     }
 
     if (!isValidType) {
-      alert("Formato de imagem inválido. Use JPEG ou PNG.")
-      return
+      alert("Formato de imagem inválido. Use JPEG ou PNG.");
+      return;
     }
 
     setProduto({
       ...produto,
-      imagem: file
+      imagem: file,
     });
-    setErrors((prev) => ({ ...prev, imagem: null }))
+    setErrors((prev) => ({ ...prev, imagem: null }));
   };
 
   const validate = () => {
@@ -150,6 +153,15 @@ const CadastroProduto = () => {
           Cadastrar Produto
         </Button>
       </form>
+      <Box textAlign="center" sx={{ marginTop: "20px" }}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => navigate("/")} // Navegar de volta para Home.jsx
+        >
+          Voltar para Home
+        </Button>
+      </Box>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
