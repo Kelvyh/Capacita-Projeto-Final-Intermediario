@@ -23,6 +23,7 @@ O objetivo deste projeto é desenvolver um aplicativo de gerenciamento de produt
 - react-router-dom
 - JavaScript
 - HTML/CSS
+- Material UI
 
 ## Instalação
 
@@ -30,16 +31,16 @@ Para rodar o projeto localmente, siga os passos abaixo:
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   git clone https://github.com/Kelvyh/Capacita-Projeto-Final-Intermediario.git
    
 2. **Navegue até o diretório do projeto**:
-   cd nome-do-repositorio
+   cd Capacita-Projeto-Final-Intermediario/projeto-final-capacita
    
 3. **Instale as dependências**:
    npm install 
 
 4. **Inicie o servidor de desenvolvimento**:
-   npm start
+   npm run dev
 
 
 ## Licença

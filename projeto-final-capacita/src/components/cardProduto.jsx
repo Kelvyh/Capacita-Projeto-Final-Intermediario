@@ -3,6 +3,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CardProduto = ({ produto, onClickEditar, onClickDeletar }) => {
 
@@ -28,12 +30,18 @@ const CardProduto = ({ produto, onClickEditar, onClickDeletar }) => {
                     variant="contained" 
                     color="primary"
                     onClick={onClickEditar}
-                >Editar</Button>
+                >
+                    <EditIcon/>
+                    Editar
+                </Button>
                 <Button 
                     variant="contained" 
                     color="error"
                     onClick={onClickDeletar}
-                    >Excluir</Button>
+                >
+                        <DeleteIcon/>
+                        Excluir
+                </Button>
             </CardActions>
         </Card>
     );
