@@ -5,14 +5,15 @@ import CardActions from '@mui/material/CardActions';
 import { Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from "react-router-dom";
 
-const CardProduto = ({ produto, onClickEditar, onClickDeletar }) => {
-
+const CardProduto = ({ produto, onDelete}) => {
+    const navigate = useNavigate();
     return (
         <Card>
             <CardMedia
-                image={`images/${produto.image}`}
-                title={produto.name}
+                image={produto.imagem?.data || `images/${produto.imagem}`} // Exibe a imagem em Base64 ou um padrão
+                title={produto.nome}
                 sx={{
                     height: 300,
                     backgroundSize: 'cover',
@@ -20,16 +21,16 @@ const CardProduto = ({ produto, onClickEditar, onClickDeletar }) => {
                   }}
             />
             <CardContent>
-                <h3>{produto.name}</h3>
-                <p>{produto.description}</p>
-                <p>R$ {produto.price}</p>
-                <p>Estoque: {produto.stock}</p>
+                <h3>{produto.nome}</h3>
+                <p>{produto.descricao}</p>
+                <p>R$ {produto.preco}</p>
+                <p>Estoque: {produto.estoque}</p>
             </CardContent>
             <CardActions sx={{ justifyContent: 'space-evenly'}}>
                 <Button 
                     variant="contained" 
                     color="primary"
-                    onClick={onClickEditar}
+                    onClick={() => navigate("/editar-produto/" + produto.id)}
                 >
                     <EditIcon/>
                     Editar
@@ -37,7 +38,7 @@ const CardProduto = ({ produto, onClickEditar, onClickDeletar }) => {
                 <Button 
                     variant="contained" 
                     color="error"
-                    onClick={onClickDeletar}
+                    onClick={()=>onDelete(produto.id)}
                 >
                         <DeleteIcon/>
                         Excluir

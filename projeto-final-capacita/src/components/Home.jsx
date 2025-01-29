@@ -1,23 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../app.css";
 import { TextField, Container, Grid2, Pagination, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CardProduto from "./CardProduto";
 
-let products = [
-  { id: 1, name: "Batom Vermelho", description: "Alta pigmentação", price: 39.9, stock: 50, image: "batom-vermelho.jpg" },
-  { id: 2, name: "Base Matte", description: "Cobertura completa", price: 79.9, stock: 30, image: "base-matte.png" },
-  { id: 3, name: "Sombra Neon", description: "Cores vibrantes", price: 49.9, stock: 20, image: "sombra-neon.jpeg" },
-];
-
 const Home = () => {
+  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
+  // Função para carregar produtos do localStorage
+  const loadProducts = () => {
+    const storedProducts = localStorage.getItem("products");
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts));
+    } else {
+      const defaultProducts = [
+        { id: 1, nome: "Batom Vermelho", descricao: "Alta pigmentação", preco: 39.9, estoque: 50, imagem: "batom-vermelho.jpg" },
+        { id: 2, nome: "Base Matte", descricao: "Cobertura completa", preco: 79.9, estoque: 30, imagem: "base-matte.png" },
+        { id: 3, nome: "Sombra Neon", descricao: "Cores vibrantes", preco: 49.9, estoque: 20, imagem: "sombra-neon.jpeg" },
+      ];
+      setProducts(defaultProducts);
+      localStorage.setItem("products", JSON.stringify(defaultProducts));
+    }
+  };
+
+  // Função para excluir um produto
+  const handleDelete = (id) => {
+    const updatedProducts = products.filter((product) => product.id !== id);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    setProducts(updatedProducts);
+  };
+
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    product.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const productsPerPage = 6;
@@ -29,6 +47,11 @@ const Home = () => {
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
+
+  // Carregar produtos ao montar o componente
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   return (
     <Container className="container">
@@ -58,7 +81,7 @@ const Home = () => {
       <Grid2 container spacing={2} className="product-grid">
         {currentProducts.map((product) => (
           <Grid2 size={4} key={product.id}>
-            <CardProduto produto={product} />
+            <CardProduto produto={product} onDelete={handleDelete} />
           </Grid2>
         ))}
       </Grid2>
