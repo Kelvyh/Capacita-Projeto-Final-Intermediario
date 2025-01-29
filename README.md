@@ -6,10 +6,10 @@ O objetivo deste projeto é desenvolver um aplicativo de gerenciamento de produt
 
 ## Imagens do Projeto
 
-![Imagem 1](C:\Users\mari2\Desktop\Capacita-Projeto-Final-Intermediario-main\projeto-final-capacita\src\assets\cadastrarproduto.png)
-![Imagem 2] (https://github.com/maryrl/ujpatriota/blob/master/Desktop/Capacita-Projeto-Final-Intermediario-main/projeto-final-capacita/src/assets/cadastrarproduto2.png)
-![Imagem 3](https://github.com/maryrl/ujpatriota/blob/master/Desktop/Capacita-Projeto-Final-Intermediario-main/projeto-final-capacita/src/assets/editarproduto.png)
-![Imagem 4](projeto-final-capacita\src\assets\feedback.png)
+![Imagem 1]()
+![Imagem 2] ()
+![Imagem 3]()
+![Imagem 4]()
 
 
 
