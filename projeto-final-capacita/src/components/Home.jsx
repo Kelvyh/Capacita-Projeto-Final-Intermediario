@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../app.css";
 import { TextField, Container, Grid2, Pagination, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CardProduto from "./CardProduto";
+import CardProduto from "./cardProduto";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -11,7 +11,6 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  // Função para carregar produtos do localStorage
   const loadProducts = () => {
     const storedProducts = localStorage.getItem("products");
     if (storedProducts) {
@@ -27,7 +26,6 @@ const Home = () => {
     }
   };
 
-  // Função para excluir um produto
   const handleDelete = (id) => {
     const updatedProducts = products.filter((product) => product.id !== id);
     localStorage.setItem("products", JSON.stringify(updatedProducts));
@@ -48,22 +46,21 @@ const Home = () => {
     setCurrentPage(page);
   };
 
-  // Carregar produtos ao montar o componente
   useEffect(() => {
     loadProducts();
   }, []);
 
   return (
-    <Container className="container">
-      <h1>Gerenciamento de Produtos</h1>
-      <Grid2 container spacing={2} sx={{ alignItems: "stratch", marginBottom: "20px" }}>
+    <Container className="container" maxWidth="lg" sx={{ padding: 4, background: 'linear-gradient(45deg, #f3f3f3, #e0e0e0)' }}>
+      <h1 style={{ fontWeight: 'bold', marginBottom: '20px' }}>Gerenciamento de Produtos</h1>
+      <Grid2 container spacing={2} sx={{ alignItems: "center", marginBottom: "40px", flexDirection: { xs: 'column', sm: 'row' } }}>
         <Grid2 size={7}>
           <TextField
             type="text"
             placeholder="Buscar produtos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", borderRadius: 2, boxShadow: 1 }}
           />
         </Grid2>
         <Grid2 size={3}>
@@ -71,17 +68,26 @@ const Home = () => {
             variant="contained"
             color="primary"
             onClick={() => navigate("/cadastrar-produto")}
-            sx={{ height: "100%" }}
+            sx={{
+              height: "100%",
+              borderRadius: 2,
+              boxShadow: 1,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: '#1565c0',
+                boxShadow: 3,
+              },
+            }}
           >
-            <AddIcon />
+            <AddIcon sx={{ marginRight: 1 }} />
             Cadastrar produto
           </Button>
         </Grid2>
       </Grid2>
-      <Grid2 container spacing={2} className="product-grid">
+      <Grid2 container spacing={4} className="product-grid" sx={{ marginTop: 4 }}>
         {currentProducts.map((product) => (
           <Grid2 size={4} key={product.id}>
-            <CardProduto produto={product} onDelete={handleDelete} />
+            <CardProduto produto={product} onDelete={handleDelete} sx={{ boxShadow: 3, borderRadius: 2 }} />
           </Grid2>
         ))}
       </Grid2>
@@ -93,11 +99,14 @@ const Home = () => {
         variant="outlined"
         shape="rounded"
         sx={{
-          marginTop: "20px",
+          marginTop: "40px",
           display: "flex",
           justifyContent: "center",
         }}
       />
+      <footer style={{ marginTop: '40px', textAlign: 'center', padding: '20px', backgroundColor: '#f5f5f5' }}>
+        <p>© 2025 Gerenciamento de Produtos. Todos os direitos reservados.</p>
+      </footer>
     </Container>
   );
 };
