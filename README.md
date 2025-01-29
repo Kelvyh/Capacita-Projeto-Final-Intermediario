@@ -4,6 +4,15 @@
 
 O objetivo deste projeto é desenvolver um aplicativo de gerenciamento de produtos para um site de comércio eletrônico utilizando a biblioteca React. Este sistema será utilizado por gerentes ou administradores para adicionar, editar e remover produtos de um catálogo online.
 
+## Imagens do Projeto
+
+![Imagem 1](C:\Users\mari2\Desktop\Capacita-Projeto-Final-Intermediario-main\projeto-final-capacita\src\assets\cadastrarproduto.png)
+![Imagem 2] (https://github.com/maryrl/ujpatriota/blob/master/Desktop/Capacita-Projeto-Final-Intermediario-main/projeto-final-capacita/src/assets/cadastrarproduto2.png)
+![Imagem 3](https://github.com/maryrl/ujpatriota/blob/master/Desktop/Capacita-Projeto-Final-Intermediario-main/projeto-final-capacita/src/assets/editarproduto.png)
+![Imagem 4](projeto-final-capacita\src\assets\feedback.png)
+
+
+
 ### Funcionalidades
 
 - **Listagem de Produtos**: A página inicial exibe todos os produtos cadastrados, mostrando atributos como nome, descrição, preço e quantidade em estoque. A visualização pode ser feita em formato de tabela ou cartões, utilizando Material UI para um design mais atraente.
