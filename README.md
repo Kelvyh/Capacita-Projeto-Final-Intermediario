@@ -6,7 +6,7 @@ O objetivo deste projeto é desenvolver um aplicativo de gerenciamento de produt
 
 ## Imagens do Projeto
 
-![Imagem 1]()
+![Imagem 1](https://github.com/Kelvyh/Capacita-Projeto-Final-Intermediario/blob/main/projeto-final-capacita/src/assets/cadastrarproduto.png)
 ![Imagem 2] ()
 ![Imagem 3]()
 ![Imagem 4]()
