@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../app.css";
-import { TextField, Container, Grid2, Pagination, Button } from "@mui/material";
+import { TextField, Container, Grid, Pagination, Button, Box, Typography, AppBar, Toolbar } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 import CardProduto from "./cardProduto";
+import SpaIcon from "@mui/icons-material/Spa";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -14,7 +16,10 @@ const Home = () => {
   const loadProducts = () => {
     const storedProducts = localStorage.getItem("products");
     if (storedProducts) {
-      setProducts(JSON.parse(storedProducts));
+      const parsedProducts = JSON.parse(storedProducts);
+      if (parsedProducts.length !== products.length) {
+        setProducts(parsedProducts);
+      }
     } else {
       const defaultProducts = [
         { id: 1, nome: "Batom Vermelho", descricao: "Alta pigmentação", preco: 39.9, estoque: 50, imagem: "batom-vermelho.jpg" },
@@ -25,6 +30,10 @@ const Home = () => {
       localStorage.setItem("products", JSON.stringify(defaultProducts));
     }
   };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   const handleDelete = (id) => {
     const updatedProducts = products.filter((product) => product.id !== id);
@@ -46,68 +55,152 @@ const Home = () => {
     setCurrentPage(page);
   };
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
   return (
-    <Container className="container" maxWidth="lg" sx={{ padding: 4, background: 'linear-gradient(45deg, #f3f3f3, #e0e0e0)' }}>
-      <h1 style={{ fontWeight: 'bold', marginBottom: '20px' }}>Gerenciamento de Produtos</h1>
-      <Grid2 container spacing={2} sx={{ alignItems: "center", marginBottom: "40px", flexDirection: { xs: 'column', sm: 'row' } }}>
-        <Grid2 size={7}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        backgroundImage: "linear-gradient(to bottom, #ffe0e0, #ffffff)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        paddingBottom: "40px"
+      }}
+    >
+      <AppBar
+        position="sticky"
+        sx={{
+          background: "rgba(255, 204, 203, 0.9)",
+          boxShadow: "0px 3px 10px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(10px)",
+          padding: "10px 0",
+          transition: "0.3s",
+        }}
+      >
+
+        <Container maxWidth="lg">
+          <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <SpaIcon sx={{ fontSize: "2.5rem", color: "#d32f2f" }} />
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: "bold",
+                  background: "linear-gradient(45deg, #d32f2f, #ff6f61)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Gerenciamento de Cosméticos
+              </Typography>
+            </Box>
+            <LocalMallIcon sx={{ fontSize: "2rem", color: "#d32f2f" }} />
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      <Container maxWidth="lg" sx={{ padding: "40px 0" }}>
+        {/* Barra de pesquisa e botão */}
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", justifyContent: "space-between", mb: 4 }}>
           <TextField
             type="text"
-            placeholder="Buscar produtos..."
+            placeholder="Busque por um produto..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ width: "100%", borderRadius: 2, boxShadow: 1 }}
-          />
-        </Grid2>
-        <Grid2 size={3}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/cadastrar-produto")}
             sx={{
-              height: "100%",
-              borderRadius: 2,
-              boxShadow: 1,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: '#1565c0',
-                boxShadow: 3,
+              flex: 1,
+              maxWidth: "500px",
+              borderRadius: "25px",
+              backgroundColor: "#fff",
+              boxShadow: "0px 3px 6px rgba(0,0,0,0.1)",
+              transition: "0.3s",
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "25px",
+                "&:hover fieldset": { borderColor: "#ff6f61" },
+                "&.Mui-focused fieldset": { borderColor: "#d32f2f", borderWidth: "2px" },
               },
             }}
+            InputProps={{
+              startAdornment: <SearchIcon sx={{ color: "#d32f2f", mr: 1 }} />,
+            }}
+          />
+          <Button
+            variant="contained"
+            onClick={() => navigate("/cadastrar-produto")}
+            sx={{
+              borderRadius: "25px",
+              padding: "12px 24px",
+              background: "linear-gradient(45deg, #d32f2f, #ff6f61)",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
+              textTransform: "none",
+              fontSize: "1rem",
+              fontWeight: "bold",
+              "&:hover": {
+                background: "linear-gradient(45deg, #ff6f61, #d32f2f)",
+              }
+            }}
           >
-            <AddIcon sx={{ marginRight: 1 }} />
-            Cadastrar produto
+            <AddIcon sx={{ mr: 1 }} />
+            Cadastrar Produto
           </Button>
-        </Grid2>
-      </Grid2>
-      <Grid2 container spacing={4} className="product-grid" sx={{ marginTop: 4 }}>
-        {currentProducts.map((product) => (
-          <Grid2 size={4} key={product.id}>
-            <CardProduto produto={product} onDelete={handleDelete} sx={{ boxShadow: 3, borderRadius: 2 }} />
-          </Grid2>
-        ))}
-      </Grid2>
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handlePageChange}
-        color="primary"
-        variant="outlined"
-        shape="rounded"
-        sx={{
-          marginTop: "40px",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      />
-      <footer style={{ marginTop: '40px', textAlign: 'center', padding: '20px', backgroundColor: '#f5f5f5' }}>
-        <p>© 2025 Gerenciamento de Produtos. Todos os direitos reservados.</p>
-      </footer>
-    </Container>
+        </Box>
+
+        {/* Grid de produtos */}
+        <Grid container spacing={3} justifyContent="center">
+          {currentProducts.map((product) => (
+            <Grid item xs={12} sm={6} md={4} key={product.id}>
+              <CardProduto produto={product} onDelete={handleDelete} />
+            </Grid>
+          ))}
+        </Grid>
+
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          variant="outlined"
+          shape="rounded"
+          sx={{
+            mt: 4,
+            display: "flex",
+            justifyContent: "center",
+            "& .MuiPaginationItem-root": {
+              fontSize: "1rem",
+              fontWeight: "bold",
+              borderRadius: "12px",
+              transition: "0.3s",
+              "&:hover": {
+                backgroundColor: "#ffe0e0",
+              },
+              "&.Mui-selected": {
+                backgroundColor: "#d32f2f",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#ff6f61",
+                }
+              }
+            }
+          }}
+        />
+
+        <Box
+          sx={{
+            mt: 5,
+            textAlign: "center",
+            padding: "20px",
+            background: "linear-gradient(45deg, #ffcccb, #ffb6c1)",
+            borderRadius: "12px",
+            boxShadow: "0px 3px 6px rgba(0,0,0,0.1)",
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#666",
+            opacity: "0.9",
+          }}
+        >
+          © 2025 Gerenciamento de Produtos. Todos os direitos reservados.
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
