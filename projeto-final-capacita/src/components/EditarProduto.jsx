@@ -1,17 +1,10 @@
-import { useState } from "react";
-import {
-  TextField,
-  Button,
-  Typography,
-  Container,
-  Box,
-  Snackbar,
-  Alert,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom"; 
+import { useState, useEffect } from 'react';
+import { TextField, Button, Container, Box, Snackbar, Alert } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const CadastroProduto = () => {
-  const navigate = useNavigate(); 
+const EditarProduto = () => {
+  const { id } = useParams(); // Captura o ID do produto da URL
+  const navigate = useNavigate();
 
   const [produto, setProduto] = useState({
     nome: "",
@@ -23,6 +16,18 @@ const CadastroProduto = () => {
 
   const [errors, setErrors] = useState({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  useEffect(() => {
+    // Recupera os produtos do localStorage
+    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+    const produtoToEdit = storedProducts.find((p) => p.id === parseInt(id));
+    
+    if (produtoToEdit) {
+      setProduto(produtoToEdit);
+    } else {
+      navigate('/'); // Caso o produto não seja encontrado, redireciona para a página inicial
+    }
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,47 +88,21 @@ const CadastroProduto = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
-      const newId = storedProducts.length > 0 ? Math.max(...storedProducts.map(p => p.id)) + 1 : 1;
-      
-      const newProduct = {
-        id: newId,
-        nome: produto.nome,
-        descricao: produto.descricao,
-        preco: parseFloat(produto.preco).toFixed(2),
-        estoque: parseInt(produto.estoque), // Estoque inicial fictício
-        imagem: produto.imagem,
-      };
+      // Recupera os produtos do localStorage
+      const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+      const updatedProducts = storedProducts.map((p) =>
+        p.id === parseInt(id) ? { ...produto, id: p.id } : p
+      );
 
-      const updatedProducts = [...storedProducts, newProduct];
-      localStorage.setItem("products", JSON.stringify(updatedProducts));
-
-
-      setProduto({
-        nome: "",
-        descricao: "",
-        preco: "",
-        estoque: "",
-        imagem: null,
-      });
+      localStorage.setItem('products', JSON.stringify(updatedProducts));
       setSnackbarOpen(true);
     }
   };
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        padding: "20px",
-        backgroundColor: "#fce4ec",
-        borderRadius: "8px",
-        boxShadow: 3,
-      }}
-    >
-      <Box textAlign="center" sx={{ marginBottom: "20px" }}>
-        <Typography variant="h4" sx={{ color: "#d81b60" }}>
-          Cadastro de Produto
-        </Typography>
+    <Container maxWidth="sm" sx={{ padding: '20px', backgroundColor: '#fce4ec', borderRadius: '8px', boxShadow: 3 }}>
+      <Box textAlign="center" sx={{ marginBottom: '20px' }}>
+        <h2>Editar Produto</h2>
       </Box>
       <form onSubmit={handleSubmit}>
         <Box mb={2}>
@@ -181,45 +160,32 @@ const CadastroProduto = () => {
               onChange={handleImageUpload}
             />
           </Button>
-          {errors.imagem && (
-            <Typography variant="body2" color="error">
-              {errors.imagem}
-            </Typography>
-          )}
         </Box>
         <Button
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ backgroundColor: "#d81b60", color: "white" }}
+          sx={{ backgroundColor: '#d81b60', color: 'white' }}
         >
-          Cadastrar Produto
+          Atualizar Produto
         </Button>
       </form>
-      <Box textAlign="center" sx={{ marginTop: "20px" }}>
+      <Box textAlign="center" sx={{ marginTop: '20px' }}>
         <Button
           variant="outlined"
           color="secondary"
-          onClick={() => navigate("/")} // Navegar de volta para Home.jsx
+          onClick={() => navigate('/')} // Navegar de volta para Home
         >
           Voltar para Home
         </Button>
       </Box>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
-      >
-        <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Produto cadastrado com sucesso!
+      <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={() => setSnackbarOpen(false)}>
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: '100%' }}>
+          Produto atualizado com sucesso!
         </Alert>
       </Snackbar>
     </Container>
   );
 };
 
-export default CadastroProduto;
+export default EditarProduto;
