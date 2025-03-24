@@ -123,9 +123,9 @@ const Home = () => {
               startAdornment: <SearchIcon sx={{ color: "#d32f2f", mr: 1 }} />,
             }}
           />
-          <Button
+          <Button>
             variant="contained"
-            onClick={() => navigate("/cadastrar-produto")}
+            onClick={() => navigate("/cliente")}
             sx={{
               borderRadius: "25px",
               padding: "12px 24px",
@@ -138,9 +138,7 @@ const Home = () => {
                 background: "linear-gradient(45deg, #ff6f61, #d32f2f)",
               }
             }}
-          >
-            <AddIcon sx={{ mr: 1 }} />
-            Cadastrar Produto
+    
           </Button>
         </Box>
 
