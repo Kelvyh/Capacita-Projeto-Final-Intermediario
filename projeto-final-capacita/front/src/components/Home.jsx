@@ -6,39 +6,27 @@ import SearchIcon from "@mui/icons-material/Search";
 import CardProduto from "./cardProduto";
 import SpaIcon from "@mui/icons-material/Spa";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
+import { getProdutos, deleteProduto } from "../api";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
-  const loadProducts = () => {
-    const storedProducts = localStorage.getItem("products");
-    if (storedProducts) {
-      const parsedProducts = JSON.parse(storedProducts);
-      if (parsedProducts.length !== products.length) {
-        setProducts(parsedProducts);
-      }
-    } else {
-      const defaultProducts = [
-        { id: 1, nome: "Batom Vermelho", descricao: "Alta pigmentação", preco: 39.9, estoque: 50, imagem: "batom-vermelho.jpg" },
-        { id: 2, nome: "Base Matte", descricao: "Cobertura completa", preco: 79.9, estoque: 30, imagem: "base-matte.png" },
-        { id: 3, nome: "Sombra Neon", descricao: "Cores vibrantes", preco: 49.9, estoque: 20, imagem: "sombra-neon.jpeg" },
-      ];
-      setProducts(defaultProducts);
-      localStorage.setItem("products", JSON.stringify(defaultProducts));
-    }
+  
+  const loadProducts = async () => {
+    const products = await getProdutos();
+    setProducts(products);
   };
 
   useEffect(() => {
     loadProducts();
   }, []);
 
-  const handleDelete = (id) => {
-    const updatedProducts = products.filter((product) => product.id !== id);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-    setProducts(updatedProducts);
+  const handleDelete = async (id) => {
+    await deleteProduto(id).then(() => {
+      loadProducts();
+    });
   };
 
   const filteredProducts = products.filter((product) =>

@@ -16,7 +16,7 @@ const CardProduto = ({ produto, onDelete }) => {
     return (
         <Card sx={styles.card}>
             <CardMedia
-                image={produto.imagem ? `images/${produto.imagem}` : "images/default.jpg"}
+                image={produto.imagem ? `${console.log(produto.imagem)}` : "images/default.jpg"}
                 title={produto.nome}
                 alt={produto.nome}
                 sx={styles.cardMedia}
@@ -30,7 +30,7 @@ const CardProduto = ({ produto, onDelete }) => {
                 </Typography>
                 <Box sx={styles.productInfo}>
                     <Typography variant="h6" sx={styles.productPrice}>
-                        R$ {produto.preco}
+                        R$ {produto.preco.toFixed(2)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={styles.productStock}>
                         Estoque: {produto.estoque}
