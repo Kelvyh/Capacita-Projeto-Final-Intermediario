@@ -105,14 +105,12 @@ const CadastroProduto = () => {
     }
     if (validate()) {
       const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
-      const newId = storedProducts.length > 0 ? Math.max(...storedProducts.map(p => p.id)) + 1 : 1;
       
       const newProduct = {
-        id: newId,
         nome: produto.nome,
         descricao: produto.descricao,
         preco: parseFloat(produto.preco).toFixed(2),
-        estoque: parseInt(produto.estoque), // Estoque inicial fictício
+        estoque: parseInt(produto.estoque),
         imagem: produto.imagem,
       };
 
