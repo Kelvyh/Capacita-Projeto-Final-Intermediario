@@ -12,14 +12,15 @@ const CardProduto = ({ produto, onDelete }) => {
 
     const handleEdit = () => navigate(`/editar-produto/${produto.id}`);
     const handleDelete = () => onDelete(produto.id);
-
+    const imageUrl = produto.imagemDataUri ? produto.imagemDataUri : "images/default.jpg";
+    
     return (
         <Card sx={styles.card}>
             <CardMedia
-                image={produto.imagem ? `${console.log(produto.imagem)}` : "images/default.jpg"}
-                title={produto.nome}
+                component="img"
+                height="140"
+                image={imageUrl}
                 alt={produto.nome}
-                sx={styles.cardMedia}
             />
             <CardContent sx={styles.cardContent}>
                 <Typography variant="h6" component="h3" sx={styles.productName}>

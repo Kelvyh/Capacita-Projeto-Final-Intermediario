@@ -92,13 +92,6 @@ const EditarProduto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      // Recupera os produtos do localStorage
-      // const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-      // const updatedProducts = storedProducts.map((p) =>
-      //   p.id === parseInt(id) ? { ...produto, id: p.id } : p
-      // );
-
-      // localStorage.setItem('products', JSON.stringify(updatedProducts));
       await updateProduto(id, produto).then(() => {
         navigate('/');
       });

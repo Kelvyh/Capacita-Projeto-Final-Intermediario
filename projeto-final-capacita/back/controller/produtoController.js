@@ -8,13 +8,14 @@ module.exports = {
 
         const produtosComImagem = produtos.map(produto => {
             if (produto.imagem) {
-              const imagemBase64 = produto.imagem.toString('base64');
-              const tipoImagem = 'image/jpeg';
+              const imagemBase64 = Buffer.from(produto.imagem).toString('base64');
+              console.log(imagemBase64);
+              const tipoImagem = 'image/jpg';
               produto.imagemDataUri = `data:${tipoImagem};base64,${imagemBase64}`;
             }
             return produto;
           });
-
+          
         res.status(200).json(produtosComImagem);
     },
 
