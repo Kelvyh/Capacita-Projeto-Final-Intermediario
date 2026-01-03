@@ -61,4 +61,4 @@ Para mais informações, entre em contato com os membros da equipe:
 Nome do Membro 1 - mari2000rodrigues.dev@gmail.com
 Nome do Membro 2 - rhaniatavares57@gmail.com
 Nome do Membro 3 - kelvyhallyson4@gmail.com
-Nome do Membro 4 - email@example.com
+Nome do Membro 4 - josuearaujouece@gmail.com
